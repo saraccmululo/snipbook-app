@@ -1,10 +1,30 @@
 import './App.css'
+import { Routes, Route, Navigate } from "react-router-dom";
+import Header from './components/Header'
+import Login from './components/pages/Login'
+import Register from './components/pages/Register'
+import Home from './components/pages/Home'
+import Footer from './components/Footer'
+import ProtectedRoute from './components/ProtectedRoute';
 
  
  const App = () => {
    return (
-     <div>App</div>
+     <>
+     <Header />
+     <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute> }
+          />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+     <Footer />
+     </>
    )
  }
  
- export default App
+ export default App;

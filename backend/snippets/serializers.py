@@ -20,13 +20,10 @@ class RegisterSerializer(serializers.ModelSerializer):
     return user
 
 
-
 class TagSerializer(serializers.ModelSerializer):
   class Meta:
     model = Tag
     fields = ['id', 'name']
-
-
 
 class SnippetSerializer(serializers.ModelSerializer):
   tags = TagSerializer(many=True, required=False) #many=True means tags will always be a list (even if empty)
@@ -80,7 +77,6 @@ class SnippetSerializer(serializers.ModelSerializer):
 
     snippet.save()
     return snippet
-  
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
   @classmethod
