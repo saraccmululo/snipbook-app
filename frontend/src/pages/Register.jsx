@@ -1,11 +1,12 @@
 import { useState, useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
-import API from "../api/api";
+import API from "../utils/api.js";
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext";
 
 function Register() {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -15,23 +16,34 @@ function Register() {
 
   const registerMutation = useMutation({
     mutationFn: async (userData) => {
-      await API.post("register/", userData);
+      const userResponse = await API.post("register/", userData);
       
       const response = await API.post("token/", {
-        username: userData.username,
+        email: userResponse.data.email,
         password: userData.password,
       });
+      console.log("userResponse.data:", userResponse.data);
+
       return response.data;
   },
 
     onSuccess: (data) => {
-      login(data.access, data.refresh);
+      login(data.access, data.refresh, data.user);
       setErrorMessage("");
       navigate ("/");
     },
 
-    onError: () => {
+    onError: (error) => {
+      const data = error.response?.data;
+      if (data?.email) {
+      setErrorMessage(data.email[0]);
+      } else if (data?.username) {
+      setErrorMessage(data.username[0]);
+      }else if (data?.password) {
+      setErrorMessage(data.password[0]);
+      } else {
       setErrorMessage("Registration failed. Please try again.");
+      }
     },
   });
 
@@ -47,12 +59,13 @@ function Register() {
 
     registerMutation.mutate({
       username,
+      email,
       password,
     });
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "50px auto" }}>
+    <div>
       <h2>Create an account</h2>
 
       <form onSubmit={handleSubmit}>
@@ -61,6 +74,14 @@ function Register() {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
 

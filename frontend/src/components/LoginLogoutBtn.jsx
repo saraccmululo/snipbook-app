@@ -18,7 +18,7 @@ const LoginLogout = () => {
 
   return (
     <div>
-      <button onClick = {isLoggedIn? handleLogout: handleLogin}> {isLoggedIn? "Logout" : "Login"}
+      <button class="btn btn-primary" onClick = {isLoggedIn? handleLogout: handleLogin}> {isLoggedIn? "Logout" : "Login"}
       </button>
     </div>
   );

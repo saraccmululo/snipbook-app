@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import API from "../api/api";
-import { useNavigate } from "react-router-dom"
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useState } from "react"
+import { useMutation } from "@tanstack/react-query"
+import API from "../utils/api"
+import { useNavigate, Link } from "react-router-dom"
+import { useContext } from "react"
+import { AuthContext } from "../context/AuthContext"
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   
@@ -18,18 +18,25 @@ const Login = () => {
       API.post("token/", credentials).then((res) => res.data),
 
     onSuccess: (data) => {
-      login(data.access, data.refresh);
+      login(data.access, data.refresh, data.user);
       navigate ("/");
     },
 
-    onError: () => {
-      setErrorMessage("Invalid username or password");
+    onError: (error) => {
+      const data = error.response?.data;
+      if(data?.email){
+        setErrorMessage(data.email[0]);
+      } else if (data?.password) {
+        setErrorMessage(data.password[0]);
+      } else {
+        setErrorMessage("Login failed. Please try again");
+      }
     },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginMutation.mutate({ username, password });
+    loginMutation.mutate({ email, password });
   };
 
   return (
@@ -38,13 +45,12 @@ const Login = () => {
 
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
-
         <input
           type="password"
           placeholder="Password"
@@ -62,6 +68,9 @@ const Login = () => {
             {errorMessage}
           </p>
         )}
+        <p>Don't have an account? {" "}
+          <Link to="/register">Register Here</Link>
+        </p>
       </div>
   )};
 
