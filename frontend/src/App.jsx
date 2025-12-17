@@ -6,24 +6,25 @@ import Register from './components/pages/Register'
 import Home from './components/pages/Home'
 import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 
  
  const App = () => {
    return (
-     <>
-     <Header />
-     <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/" element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute> }
-          />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-     <Footer />
-     </>
+    <AuthProvider>
+      <Header />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute> }
+            />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      <Footer />
+    </AuthProvider>
    )
  }
  

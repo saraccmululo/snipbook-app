@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
 import API from "../api/api";
 import { useNavigate } from "react-router-dom"
+import { AuthContext } from "../context/AuthContext";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -9,6 +10,7 @@ function Register() {
   const [password2, setPassword2] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const registerMutation = useMutation({
@@ -23,8 +25,7 @@ function Register() {
   },
 
     onSuccess: (data) => {
-      localStorage.setItem("access_token", data.access);
-      localStorage.setItem("refresh_token", data.refresh);
+      login(data.access, data.refresh);
       setErrorMessage("");
       navigate ("/");
     },

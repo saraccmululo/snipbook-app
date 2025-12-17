@@ -1,25 +1,18 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-function LoginLogout() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const LoginLogout = () => {
 
   const navigate = useNavigate();
-
-  // Check token on mount
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    setIsLoggedIn(!!token);
-  }, []);
+  const { isLoggedIn, logout } = useContext(AuthContext);
 
   const handleLogin = () => {
-    navigate("login/");
+    navigate("/login");
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    setIsLoggedIn(false);
+    logout();
     navigate("/");
   };
 
