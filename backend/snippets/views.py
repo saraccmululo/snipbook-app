@@ -4,6 +4,7 @@ from .models import Snippet
 from .serializers import SnippetSerializer, RegisterSerializer, MyTokenObtainPairSerializer
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 #Register the user
@@ -37,3 +38,5 @@ class SnippetRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class=MyTokenObtainPairSerializer
+
+

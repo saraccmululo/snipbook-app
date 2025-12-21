@@ -34,17 +34,13 @@ function Register() {
     },
 
     onError: (error) => {
-      const data = error.response?.data;
-      if (data?.email) {
-      setErrorMessage(data.email[0]);
-      } else if (data?.username) {
-      setErrorMessage(data.username[0]);
-      }else if (data?.password) {
-      setErrorMessage(data.password[0]);
-      } else {
-      setErrorMessage("Registration failed. Please try again.");
-      }
-    },
+    const data = error.response?.data;
+    if (data?.email) setErrorMessage(Array.isArray(data.email) ? data.email[0] : data.email);
+    else if (data?.username) setErrorMessage(Array.isArray(data.username) ? data.username[0] : data.username);
+    else if (data?.password) setErrorMessage(Array.isArray(data.password) ? data.password[0] : data.password);
+    else if (typeof data === "string") setErrorMessage(data);
+    else setErrorMessage("Registration failed. Please try again.");
+  },
   });
 
   const handleSubmit = (e) => {

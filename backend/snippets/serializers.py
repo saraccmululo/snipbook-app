@@ -3,6 +3,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from. models import Snippet, Tag
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
 
 #Serializers convert Python objects into JSON and validate incoming data from API requests.
 
@@ -42,6 +43,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class SnippetSerializer(serializers.ModelSerializer):
   tags = TagSerializer(many=True, required=False) #many=True means tags will always be a list (even if empty)
+
   owner = serializers.ReadOnlyField(source='owner.username')
 
   class Meta:
@@ -58,6 +60,7 @@ class SnippetSerializer(serializers.ModelSerializer):
       "created_at",
       "updated_at"
     ]
+
   
   def create(self, validated_data):
     #Remove tag from data
@@ -70,12 +73,15 @@ class SnippetSerializer(serializers.ModelSerializer):
     if tags_data is not None:
     #create tag obj and add it back into snippet obj
       for t in tags_data:
-        tag_obj,_=Tag.objects.get_or_create(name=t['name'])
+        tag_name = t['name'].lower()
+        tag_obj,_=Tag.objects.get_or_create(name=tag_name)
         snippet.tags.add(tag_obj)
     return snippet
 
   def update(self, snippet, validated_data): #snippet is the snippet obj to be updated
+    
     tags_data=validated_data.pop('tags', None)
+    print(snippet)
 
     #.items() allows iterate over each key-value pair in a dict
     for key, value in validated_data.items():
@@ -84,46 +90,79 @@ class SnippetSerializer(serializers.ModelSerializer):
     #If tags is provided, delete old tags
     if tags_data is not None:
       snippet.tags.clear()
+    
+      
 
     #Loop over new tag obj and add it to the snippet obj
       for t in tags_data:
-        tag_obj,_ = Tag.objects.get_or_create(name=t['name'])
+        tag_name = t['name'].lower()
+        #tag_obj,_=Tag.objects.get_or_create(name=tag_name)
+        #print(tag_obj)
+   
+        #snippet.tags.add(tag_obj)
+
+    snippet.save()
+    return snippet
+
+
+"""
+
+  def create(self, validated_data):
+    tags_data = validated_data.pop('tags', [])
+    snippet = Snippet.objects.create(**validated_data)
+
+    for tag_name in tags_data:
+      tag_obj, _ = Tag.objects.get_or_create(name=tag_name)
+      snippet.tags.add(tag_obj)
+    return snippet
+
+  def update(self, snippet, validated_data):
+    tags_data = validated_data.pop('tags', None)
+    for key, value in validated_data.items():
+      setattr(snippet, key, value)
+      
+    if tags_data is not None:
+      snippet.tags.clear()
+      for tag_name in tags_data:
+        tag_obj, _ = Tag.objects.get_or_create(name=tag_name)
+        print(tag_obj)
         snippet.tags.add(tag_obj)
 
     snippet.save()
     return snippet
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-  # override fields
-  username_field = User.EMAIL_FIELD  # tells parent class to use email as the "username"
+"""
 
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+  username_field = 'email'
   def validate(self, attrs):
-    email = attrs.get("email")  # frontend will send 'email'
+    print("attrs:", attrs)
+    email = attrs.get("email")
     password = attrs.get("password")
+
     if not email or not password:
-        raise serializers.ValidationError("Both email and password are required.")
-    
-    # Look up user by email
+      raise serializers.ValidationError("Both email and password are required.")
+
+    # Find the user by email
     try:
       user_obj = User.objects.get(email=email)
-      username = user_obj.username
     except User.DoesNotExist:
-      raise serializers.ValidationError({
-        "email": "No user found with this email."})
+      raise serializers.ValidationError({"email": "No user found with this email."})
 
-    # Authenticate user with username + password
+    # Authenticate using the username (not email!) and password
     user = authenticate(username=user_obj.username, password=password)
     if not user:
-      raise serializers.ValidationError({
-        "password":"Incorrect password."})
-    
-    # Generate tokens
-    data=super().validate({"username": user_obj.username, "password": password})
+      raise serializers.ValidationError({"password": "Incorrect password."})
 
-    #Add user object to the respnse
-    data['user'] = {
+    # Manually generate tokens
+    refresh = RefreshToken.for_user(user)
+    data = {
+      "refresh": str(refresh),
+      "access": str(refresh.access_token),
+      "user": {
       "id": user.id,
       "username": user.username,
       "email": user.email,
+      },
     }
     return data

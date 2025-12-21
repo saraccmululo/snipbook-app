@@ -38,9 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django.contrib.sites',
     "rest_framework",
+    'rest_framework_simplejwt',
     "corsheaders",
     'django_extensions',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
 ]
 
 MIDDLEWARE = [
@@ -53,9 +57,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+SITE_ID = 1
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173",] # for development
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = False
 
 ROOT_URLCONF = "snipbook_backend.urls"
 
