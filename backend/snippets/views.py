@@ -19,11 +19,11 @@ class SnippetListCreateView(generics.ListCreateAPIView):
     serializer_class = SnippetSerializer #Convert model → JSON for GET. Convert JSON → model for POST/PUT
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['title', 'description', 'code', 'tags__name', 'language']
+    search_fields = ['title', 'description', 'code', 'language']
     ordering_fields = ['created_at', 'updated_at', 'title']
 
     def get_queryset(self):#get all snippets from a particular owner
-        return Snippet.objects.filter(owner=self.request.user).prefetch_related('tags')
+        return Snippet.objects.filter(owner=self.request.user)
 
     def perform_create(self, serializer): #add the owner when creating a new snippet
         serializer.save(owner=self.request.user)
@@ -34,7 +34,7 @@ class SnippetRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]#only logged in users can retrieve/update/delete
 
     def get_queryset(self):
-        return Snippet.objects.filter(owner=self.request.user).prefetch_related('tags') #only owner can modify their snippets.
+        return Snippet.objects.filter(owner=self.request.user) #only owner can modify their snippets.
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class=MyTokenObtainPairSerializer

@@ -3,12 +3,14 @@ import API from "../utils/api";
 import ConfirmModal from "./ConfirmModal";
 import {useState} from "react";
 import { useNavigate} from "react-router-dom";
+import { Card } from "react-bootstrap";
 
 const SnippetCard = ({ snippet }) => {
   const queryClient = useQueryClient();
   const navigate=useNavigate();
   const [showModal, setShowModal] = useState(false);
-
+  const [copied, setCopied] = useState(false);
+  
   const handleToggleFavorite = async()=> {
     try{
       await API.patch(`snippets/${snippet.id}/`, {favorite: !snippet.favorite})
@@ -28,41 +30,89 @@ const SnippetCard = ({ snippet }) => {
     }
   }
 
+  const handleCopy = async () => {
+    try{
+      await navigator.clipboard.writeText(snippet.code);
+      setCopied(true);
+      setTimeout(()=> setCopied(false), 2500);
+    }catch (err) {
+      console.error("Failed to copy", err);
+    }
+  }
+
   return (
-    <div className="card mb-3 shadow-sm">
-      <div className="card-body">
-        <h4 className="card-title text-primary">{snippet.title}</h4>
-         <i className={snippet.favorite? "bi bi-star-fill text-warning": "bi bi-star text-secondary"} onClick={handleToggleFavorite}></i>
-         <button
-          className="btn btn-sm btn-danger float-end"
-          onClick={()=> setShowModal(true)}
-        >
-          Delete
-        </button>
-        <button
-          className="btn btn-sm btn-info float-end"
-          onClick={()=> navigate(`/snippets/${snippet.id}/edit`)}
-        >
-          Edit
-        </button>
-        <h5 className="card-subtitle mb-2 text-muted">{snippet.description}</h5>
-        <pre className="card-text bg-dark text-light p-3 rounded" style={{ overflowX: 'auto' }}>
-          <code>{snippet.code}</code>
-        </pre>
-        <p className="card-text mt-2">
-          {snippet.tags && snippet.tags.map((tag, idx) => (
-            <span key={idx} className="badge bg-secondary me-1">{tag.name}</span>
-          ))}
-        </p>
+  <>
+    <Card className="shadow-sm mx-auto mb-4" style={{ maxWidth: "600px" }}>
+      <Card.Body>
+        {/* Title */}
+        <div className="d-flex justify-content-between align-items-center flex-wrap">
+          <Card.Title className="mb-1">{snippet.title}</Card.Title>
+        
+        {/* Icons: Favorite, Edit, Delete */}
+          <div className="d-flex align-items-center mb-0 gap-3">
+        
+          {/* Favorite */}
+          <i
+            className={snippet.favorite ? "bi bi-star-fill text-warning" : "bi bi-star text-secondary"}
+            onClick={handleToggleFavorite}
+            style={{ cursor: "pointer", fontSize: "1.0rem"}}
+          ></i>
+
+        {/* Edit */}
+          <button
+            className="btn btn-sm btn-link p-0"
+            onClick={() => navigate(`/snippets/${snippet.id}/edit`)}
+            title="Edit"
+          >
+            <i className="bi bi-pencil text-primary" style={{ fontSize: "1.0rem" }}></i>
+          </button>
+
+        {/* Delete */}
+          <button
+            className="btn btn-sm btn-link p-0"
+            onClick={() => setShowModal(true)}
+            title="Delete"
+          >
+            <i className="bi bi-x text-danger" style={{fontSize: "1.5rem"}}></i>
+          </button>
+        </div>
       </div>
-      <ConfirmModal 
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        onConfirm = {handleDelete}
-        title="Confirm Delete"
-        message="Are you sure you want to delete this snippet?"
-      />
-    </div>
+      
+        {/* Language */}
+        <p className="text-muted mt-0 mb-3">({snippet.language})</p>
+
+        {/* Description */}
+        {snippet.description && (
+          <Card.Subtitle className="mb-2 text-muted">{snippet.description}</Card.Subtitle>
+        )}
+
+        {/* Code container */}
+        <div>
+          <div className="d-flex justify-content-end mb-1">
+            <button
+              type="button"
+              className="btn btn-sm btn-link copy-btn"
+              onClick={handleCopy}
+            >
+              {copied ? "Copied!" : "⧉Copy"}
+            </button>
+          </div>
+          <pre className="bg-dark text-light p-3 rounded" style={{ overflowX: 'auto' }}>
+            <code>{snippet.code}</code>
+          </pre>
+        </div>
+      </Card.Body>
+    </Card>
+
+    {/* Delete Modal */}
+    <ConfirmModal 
+      show={showModal}
+      onClose={() => setShowModal(false)}
+      onConfirm = {handleDelete}
+      title="Confirm Delete"
+      message="Are you sure you want to delete this snippet?"
+    />
+  </>
   );
 }
 

@@ -1,14 +1,15 @@
 import './App.css'
 import { Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/Header'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home'
-import Footer from './components/Footer'
-import ProtectedRoute from './components/ProtectedRoute';
-import { AuthProvider } from './context/AuthContext';
+import Dashboard from './pages/Dashboard';
 import AddSnippet from './pages/AddSnippet';
 import EditSnippet from './pages/EditSnippet';
+import Footer from './components/Footer'
 
  const App = () => {
    return (
@@ -18,11 +19,8 @@ import EditSnippet from './pages/EditSnippet';
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/" element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute> }
-              />
+            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute> }/>
             <Route path="/snippets/new" element={ <ProtectedRoute><AddSnippet/></ProtectedRoute>} />
             <Route path="/snippets/:id/edit" element={ <ProtectedRoute><EditSnippet/></ProtectedRoute>} />
             <Route path="*" element={<Navigate to="/" />} />

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from. models import Snippet, Tag
+from. models import Snippet
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -36,16 +36,8 @@ class RegisterSerializer(serializers.ModelSerializer):
       "email": instance.email,
     }
 
-class TagSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Tag
-    fields = ['id', 'name']
-
 class SnippetSerializer(serializers.ModelSerializer):
-  tags = TagSerializer(many=True, required=False) #many=True means tags will always be a list (even if empty)
-
   owner = serializers.ReadOnlyField(source='owner.username')
-
   class Meta:
     model = Snippet
     fields = [
@@ -53,85 +45,48 @@ class SnippetSerializer(serializers.ModelSerializer):
       "owner",
       "title",
       "language",
-      "tags",
       "description",
       "code",
       "favorite",
       "created_at",
       "updated_at"
     ]
+  #cleaning data before saving
+  def validate_title(self, value):
+    return value.strip()
 
+  def validate_language(self, value):
+    return value.strip().lower()
+
+  def validate_description(self, value):
+    return value.strip()
+  
+  #Capitalize language before sending to frontend
+  def to_representation(self, instance):
+    data = super().to_representation(instance)
+
+    language = data.get("language")
+    if language:
+        upper_case_languages = {"css", "html", "sql", "jsx", "php", "json"}
+
+        if language in upper_case_languages:
+            data["language"] = language.upper()
+        else:
+            data["language"] = language.capitalize()
+
+    return data
   
   def create(self, validated_data):
-    #Remove tag from data
-    tags_data = validated_data.pop('tags', None)
-
-    #create snippet object without tag
+    #create snippet object 
     snippet = Snippet.objects.create(**validated_data)
-
-    #if tag is provided, 
-    if tags_data is not None:
-    #create tag obj and add it back into snippet obj
-      for t in tags_data:
-        tag_name = t['name'].lower()
-        tag_obj,_=Tag.objects.get_or_create(name=tag_name)
-        snippet.tags.add(tag_obj)
     return snippet
 
   def update(self, snippet, validated_data): #snippet is the snippet obj to be updated
-    
-    tags_data=validated_data.pop('tags', None)
-    print(snippet)
-
     #.items() allows iterate over each key-value pair in a dict
     for key, value in validated_data.items():
       setattr(snippet, key, value) #setattr receives the snippet obj to be updated, the name of the key and the new value.
-
-    #If tags is provided, delete old tags
-    if tags_data is not None:
-      snippet.tags.clear()
-    
-      
-
-    #Loop over new tag obj and add it to the snippet obj
-      for t in tags_data:
-        tag_name = t['name'].lower()
-        #tag_obj,_=Tag.objects.get_or_create(name=tag_name)
-        #print(tag_obj)
-   
-        #snippet.tags.add(tag_obj)
-
     snippet.save()
     return snippet
-
-
-"""
-
-  def create(self, validated_data):
-    tags_data = validated_data.pop('tags', [])
-    snippet = Snippet.objects.create(**validated_data)
-
-    for tag_name in tags_data:
-      tag_obj, _ = Tag.objects.get_or_create(name=tag_name)
-      snippet.tags.add(tag_obj)
-    return snippet
-
-  def update(self, snippet, validated_data):
-    tags_data = validated_data.pop('tags', None)
-    for key, value in validated_data.items():
-      setattr(snippet, key, value)
-      
-    if tags_data is not None:
-      snippet.tags.clear()
-      for tag_name in tags_data:
-        tag_obj, _ = Tag.objects.get_or_create(name=tag_name)
-        print(tag_obj)
-        snippet.tags.add(tag_obj)
-
-    snippet.save()
-    return snippet
-
-"""
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
   username_field = 'email'
@@ -161,8 +116,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
       "access": str(refresh.access_token),
       "user": {
       "id": user.id,
-      "username": user.username,
+      "username": user.username, #for my auth purposes
       "email": user.email,
+      "display_name": user.username, #to show username in the UI
       },
     }
     return data

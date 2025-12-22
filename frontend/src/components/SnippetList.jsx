@@ -22,12 +22,15 @@ const SnippetList = ({filters}) => {
 
   if(isError) return <p className="text-danger">Failed to load snippets</p>
   
+  //filter
   let filteredSnippets = snippets;
   
-  //filter
-  if (filterType && filterText) {
+  if (filterType === "favorite") {
+    filteredSnippets = filteredSnippets.filter(snippet => snippet.favorite);
+  }
+  else if (filterType && filterText.trim()) {
     filteredSnippets = filteredSnippets.filter(snippet =>
-    snippet[filterType].toLowerCase().includes(filterText.toLowerCase()) 
+    snippet[filterType]?.toString().toLowerCase().includes(filterText.trim().toLowerCase())
   )}
 
   // sort
@@ -49,15 +52,15 @@ const SnippetList = ({filters}) => {
   return (
     <>
     {filteredSnippets.length === 0? (
-      <p>No snippets yet.</p>
+      <p className="text-center">No snippets yet.</p>
     ) : (
-      <ul>
+      <div className="row g-4">
         {filteredSnippets.map((snippet) => (
-          <li key={snippet.id}>
-            <SnippetCard snippet={snippet}/>
-          </li>
+          <div key={snippet.id} className="col-12 col-md-6 col-lg-4">
+              <SnippetCard snippet={snippet}/>
+          </div>
         ))}
-      </ul>
+      </div>
     )}
     </>
   )

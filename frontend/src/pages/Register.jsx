@@ -3,6 +3,8 @@ import { useMutation } from "@tanstack/react-query";
 import API from "../utils/api.js";
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext";
+import { Form, Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -30,7 +32,7 @@ function Register() {
     onSuccess: (data) => {
       login(data.access, data.refresh, data.user);
       setErrorMessage("");
-      navigate ("/");
+      navigate ("/dashboard");
     },
 
     onError: (error) => {
@@ -61,53 +63,75 @@ function Register() {
   };
 
   return (
-    <div>
-      <h2>Create an account</h2>
+    <div className="d-flex justify-content-center mt-5">
+      <Card className="shadow-sm" style={{ maxWidth: "450px", width: "100%" }}>
+        <Card.Body>
+          <h3 className="text-center mb-4">Create an account</h3>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Control
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+            <Form.Group className="mb-3">
+              <Form.Control
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+            <Form.Group className="mb-3">
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-        <input
-          type="password"
-          placeholder="Confirm password"
-          value={password2}
-          onChange={(e) => setPassword2(e.target.value)}
-          required
-        />
+            <Form.Group className="mb-3">
+              <Form.Control
+                type="password"
+                placeholder="Confirm password"
+                value={password2}
+                onChange={(e) => setPassword2(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-        <button type="submit" disabled={registerMutation.isLoading}>
-          {registerMutation.isLoading ? "Creating account..." : "Register"}
-        </button>
-      </form>
-       {errorMessage && (
-          <p style={{ color: "red", marginTop: "10px" }}>
-            {errorMessage}
+            <Button
+              type="submit"
+              className="w-100 btn-brand"
+              disabled={registerMutation.isLoading}
+            >
+              {registerMutation.isLoading
+                ? "Creating account..."
+                : "Register"}
+            </Button>
+          </Form>
+
+          {errorMessage && (
+            <p className="text-danger mt-3 text-center">{errorMessage}</p>
+          )}
+
+          <p className="text-center mt-3 mb-0">
+            Already have an account?{" "}
+            <Link to="/login" className="brand-link">Login here</Link>
           </p>
-        )}
+        </Card.Body>
+      </Card>
     </div>
   );
-}
+};
 
 export default Register;

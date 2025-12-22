@@ -2,13 +2,13 @@ import { useQueryClient, useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import API from "../utils/api"
 import { useNavigate } from "react-router-dom"
+import BackButton from "../components/BackButton"
 
 const AddSnippet = () => {
   const [title, setTitle] = useState("")
   const [language, setLanguage] = useState("")
   const [description, setDescription] = useState("")
   const [code, setCode] = useState("")
-  const [tags, setTags] = useState("")
   const [error, setError] = useState("")
   const [favorite, setFavorite] = useState(false);
   const navigate = useNavigate();
@@ -22,13 +22,11 @@ const AddSnippet = () => {
     },
     onSuccess:()=> {
       queryClient.invalidateQueries(['snippets']);
-      navigate("/");
-
+      navigate("/dashboard");
       setTitle("");
       setLanguage("");
       setDescription("");
       setCode("");
-      setTags("");
       setFavorite(false);
       setError("");
     },
@@ -44,7 +42,6 @@ const AddSnippet = () => {
       setError("Title, language and code fields are required")
       return
     }
-
     setError("");
 
     addSnippetMutation.mutate({
@@ -52,19 +49,13 @@ const AddSnippet = () => {
       language, 
       description, 
       code, 
-      tags: tags 
-        ? tags
-          .split(",")
-          .map((tag) => tag.trim().toLowerCase())
-          .filter(tag => tag.length > 0) 
-        : [],
       favorite,
     })
   }  
-  
 
   return (
     <div className="container my-4">
+      <BackButton />
        <div className="card shadow-sm p-4">
         <h4 className="mb-4">Add New Snippet</h4>
       <form onSubmit={handleSubmit} className="row g-3">
@@ -110,16 +101,6 @@ const AddSnippet = () => {
           />
         </div>
         
-        <div className="col-12">
-          <input 
-          type="text"
-          placeholder="Tags (comma-separated)"
-          className="form-control"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-          />
-        </div>
-        
         <div className="col-12 col-md-6 d-flex align-items-center">
           <input
             type="checkbox"
@@ -134,7 +115,7 @@ const AddSnippet = () => {
         </div>
 
          <div className="col-12">
-        <button type="submit"  className="btn btn-primary" disabled={addSnippetMutation.isLoading}>{addSnippetMutation.isLoading? "Adding...":"Add Snippet"}
+        <button type="submit"  className="btn add-snippet-btn" disabled={addSnippetMutation.isLoading}>{addSnippetMutation.isLoading? "Adding...":"Add Snippet"}
         </button>
         </div>
 

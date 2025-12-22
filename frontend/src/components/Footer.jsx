@@ -1,4 +1,4 @@
-import portfolioIcon from "../assets/portfolio-icon.png"
+import portfolioIcon from "../assets/portfolio-icon-light.png"
 
 const Footer = () => {
   return (
@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Left */}
           <div className="col-md-6 mb-3 mb-md-0">
             <small>
-              © {new Date().getFullYear()} SnippetVault
+              © {new Date().getFullYear()} SCCM Software Solutions
             </small>
           </div>
 
@@ -25,6 +25,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="text-light fs-5"
                   aria-label="LinkedIn"
+                  title="LinkedIn"
                 >
                   <i className="bi bi-linkedin"></i>
                 </a>
@@ -43,7 +44,8 @@ const Footer = () => {
                     alt="Portfolio" 
                     width="22"
                     height="22"
-                    style={{filter: "invert(1)"}}
+                    title="Portfolio"
+                    //style={{filter: "invert(1)"}}
                   />
                 </a>
               </li>
@@ -54,6 +56,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="text-light fs-5"
                   aria-label="GitHub"
+                  title="GitHub"
                 >
                   <i className="bi bi-github"></i>
                 </a>

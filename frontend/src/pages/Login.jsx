@@ -4,6 +4,7 @@ import API from "../utils/api"
 import { useNavigate, Link } from "react-router-dom"
 import { useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
+import { Form, Button, Card } from "react-bootstrap";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ const Login = () => {
 
     onSuccess: (data) => {
       login(data.access, data.refresh, data.user);
-      navigate ("/");
+      navigate ("/dashboard");
     },
 
     onError: (error) => {
@@ -40,38 +41,53 @@ const Login = () => {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "50px auto" }}>
-      <h2>Login</h2>
+    <div className="d-flex justify-content-center mt-5">
+      <Card className="shadow-sm" style={{ maxWidth: "400px", width: "100%" }}>
+        <Card.Body>
+          <h3 className="text-center mb-4">Login</h3>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Control
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-        <button type="submit" disabled={loginMutation.isLoading}>
-          {loginMutation.isLoading ? "Logging in..." : "Login"}
-        </button>
-      </form>
-      {errorMessage && (
-          <p style={{ color: "red", marginTop: "10px" }}>
-            {errorMessage}
+            <Form.Group className="mb-3">
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Button
+              type="submit"
+              className="w-100 btn-brand"
+              disabled={loginMutation.isLoading}
+            >
+              {loginMutation.isLoading ? "Logging in..." : "Login"}
+            </Button>
+          </Form>
+
+          {errorMessage && (
+            <p className="text-danger mt-3 text-center">{errorMessage}</p>
+          )}
+
+          <p className="text-center mt-3 mb-0">
+            Don’t have an account?{" "}
+            <Link to="/register" className="brand-link">Register here</Link>
           </p>
-        )}
-        <p>Don't have an account? {" "}
-          <Link to="/register">Register Here</Link>
-        </p>
-      </div>
-  )};
+        </Card.Body>
+      </Card>
+    </div>
+  );
+};
 
   export default Login

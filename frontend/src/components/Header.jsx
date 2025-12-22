@@ -10,10 +10,12 @@ const Header = () => {
   return (
     <header className="bg-light border-bottom">
       <div className="container d-flex align-items-center justify-content-between p-2 border-bottom bg-light">
-        <Link to="/"><img src={logo} alt="Snipbook Logo" className="img-fluid" style={{ maxWidth: "200px" }}/></Link>
-        <div className="d-flex flex-column align-items-end">
+        
+        <Link to={isLoggedIn ? "/dashboard": "/"}><img src={logo} alt="Snipbook Logo" className="img-fluid" style={{ maxWidth: "250px" }}/></Link>
+        <div className="d-flex align-items-center">
           {isLoggedIn && user && (
-            <p className="mb-0 mx-3">Welcome, {user.username}</p>
+            <p className="mb-0 me-3"><strong>{user.display_name}</strong>
+            </p>
           )}
           <LoginLogoutBtn />
           </div>

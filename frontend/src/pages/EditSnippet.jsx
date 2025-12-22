@@ -2,13 +2,13 @@ import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query"
 import API from "../utils/api"
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react";
+import BackButton from "../components/BackButton";
 
 const EditSnippet = () => {
   const [title, setTitle] = useState("")
   const [language, setLanguage] = useState("")
   const [description, setDescription] = useState("")
   const [code, setCode] = useState("")
-  const [tags, setTags] = useState("")
   const [favorite, setFavorite] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -30,7 +30,6 @@ const EditSnippet = () => {
       setLanguage(snippet.language || "");
       setDescription(snippet.description || "");
       setCode(snippet.code || "");
-      setTags(snippet.tags?.map(t => t.name).join(", ") || "");
       setFavorite(snippet.favorite || false);
     }
   }, [snippet]);
@@ -42,7 +41,7 @@ const EditSnippet = () => {
     },
     onSuccess:()=> {
       queryClient.invalidateQueries(['snippets']);
-      navigate("/");
+      navigate("/dashboard");
     },
     onError: ()=> {
       setError("Failed to update snippet. Please try again.")
@@ -62,22 +61,8 @@ const EditSnippet = () => {
       language, 
       description, 
       code, 
-      tags: tags? tags.split(",").map(tag=>({name:tag.trim()})).filter(tag => tag.name): [],
       favorite: favorite,
     })
-  
-  //const payload = {
-  //title, 
-  //language, 
-  //description, 
-  //code, 
-  //tags: tags ? tags.split(",").map(tag => tag.trim()).filter(tag => tag.length > 0) : [],
- // favorite,
-//};
-
-//console.log("PATCH payload:", payload);
-//editSnippetMutation.mutate(payload);
-
 }  
 
   if(isLoading){
@@ -99,6 +84,7 @@ const EditSnippet = () => {
 
   return (
     <div className="container my-4">
+      <BackButton />
        <div className="card shadow-sm p-4">
         <h4 className="mb-4">Edit Snippet</h4>
       <form onSubmit={handleSubmit} className="row g-3">
@@ -144,16 +130,6 @@ const EditSnippet = () => {
           />
         </div>
         
-        <div className="col-12">
-          <input 
-          type="text"
-          placeholder="Tags (comma-separated)"
-          className="form-control"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-          />
-        </div>
-        
         <div className="col-12 col-md-6 d-flex align-items-center">
           <input
             type="checkbox"
@@ -168,7 +144,7 @@ const EditSnippet = () => {
         </div>
 
          <div className="col-12">
-        <button type="submit"  className="btn btn-primary" disabled={editSnippetMutation.isLoading}>{editSnippetMutation.isLoading? "Saving...":"Save"}
+        <button type="submit"  className="btn add-snippet-btn" disabled={editSnippetMutation.isLoading}>{editSnippetMutation.isLoading? "Saving...":"Save"}
         </button>
         </div>
 
