@@ -63,7 +63,7 @@ function Register() {
   };
 
   return (
-    <div className="d-flex justify-content-center mt-5">
+    <div className="d-flex justify-content-center mt-5 px-3">
       <Card className="shadow-sm" style={{ maxWidth: "450px", width: "100%" }}>
         <Card.Body>
           <h3 className="text-center mb-4">Create an account</h3>

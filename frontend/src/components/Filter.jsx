@@ -13,7 +13,7 @@ const Filter = ({filters, setFilters}) => {
   };
 
   return (
-    <Card className="mb-4 shadow-sm" style={{ maxWidth: "700px", margin: "auto" }}>
+    <Card className="mb-4 shadow-sm filter-card" style={{ maxWidth: "700px", margin: "auto" }}>
       <Card.Body>
         <Row className="g-3 align-items-center">
           {/* Sort */}

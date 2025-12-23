@@ -1,6 +1,21 @@
+section.font-inter {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+section.inter-semibold {
+  font-weight: 600;
+}
+
+header .header-logo {
+  max-width: 250px; 
+}
+header .header-logout-btn button {
+  font-size: 1.1rem;
+  padding: 0.3rem 0.6rem;
+}
+
 button.add-snippet-btn {
-  background-color: rgba(37, 150, 190, 1);
-  border-color: rgba(37, 150, 190, 1);
+  background-color: rgba(4, 167, 168);
+  border-color: rgba(4, 167, 168);
   color: #fff;
   font-size: 1.0rem;
 }
@@ -10,19 +25,41 @@ button.add-snippet-btn:hover {
   color: #fff;
 }
 
+.action-icon {
+  cursor: pointer;
+  display: inline-flex;    
+  transition: transform 0.25s ease, opacity 0.25s ease,background-color 0.25s ease, color 0.25s ease;
+  border-radius: 50%;           
+  padding: 4px;
+}
+.action-icon.favorite:hover {
+  transform: scale(1.3);
+  opacity: 1;
+  background-color: rgba(255, 193, 7, 0.266);
+}
+.action-icon.edit:hover {
+  transform: scale(1.3);
+  opacity: 1;
+  background-color: rgba(0, 123, 255, 0.2);
+}
+.action-icon.delete:hover {
+  transform: scale(1.1);    
+  background-color: #c12e3d41;
+}
+
 button.back-btn {
   background-color: transparent; 
   border: none;                 
-  color: rgba(37, 150, 190, 1); 
+  color: rgba(4, 167, 168); 
   font-size: 1rem;
   cursor: pointer;
-  padding: 0;                    
+  margin-bottom: 5px;    
   transition: all 0.2s ease;
 }
 
 button.back-btn:hover {
   text-decoration: underline;    
-  color: rgba(32, 130, 165, 1); 
+  color: rgba(4, 167, 168); 
 }
 
 textarea.form-control.dark-textarea {
@@ -63,7 +100,7 @@ button.copy-btn:hover {
 button.btn-brand,
 a.btn-brand {
   background-color: rgba(103, 67, 215);
-  border-color: rgba(37, 150, 190, 1);
+  border-color: rgba(4, 167, 168);
   color: #fff;
   display: inline-block; /* ensures links behave like buttons */
   text-align: center;
@@ -77,19 +114,18 @@ button.btn-brand:hover,
 a.btn-brand:hover,
 .btn-brand:focus,
 a.btn-brand:focus {
-  background-color: rgba(32, 130, 165, 1); 
-  border-color: rgba(32, 130, 165, 1);
+  background-color: rgba(4, 167, 168); 
+  border-color: rgba(4, 167, 168);
   color: #fff;
 }
 
 button.btn-brand:disabled,
 a.btn-brand:disabled {
-  background-color: rgba(37, 150, 190, 0.6);
-  border-color: rgba(37, 150, 190, 0.6);
+  background-color: rgba(4, 167, 168);
+  border-color: rgba(4, 167, 168);
   color: #fff;
 }
 
-/* Outline brand button */
 a.btn-brand-outline,
 button.btn-brand-outline {
   background-color: transparent;
@@ -102,5 +138,76 @@ button.btn-brand-outline:hover,
 a.btn-brand-outline:focus,
 button.btn-brand-outline:focus {
   background-color: rgba(37, 150, 190, 0.1);
-  color: rgba(37, 150, 190, 1);
+  color: rgba(4, 167, 168);
+}
+footer.bg-dark {
+  padding: 1.5rem 0;
+}
+
+@media (max-width: 576px) {
+  header .header-logo {
+    max-width: 160px; 
+  }
+  .header-welcome .welcome-text {
+    display: none; 
+  }
+  header .header-logout-btn button {
+    font-size: 0.9rem; 
+    padding: 0.2rem 0.5rem; 
+  }
+  button.add-snippet-btn {
+    font-size: 0.8rem;   
+    padding: 0.3rem 0.6rem; 
+  }
+  /* filter */
+  .filter-card select.form-select,
+  .filter-card input.form-control {
+    font-size: 0.8rem;  
+    padding: 0.25rem 0.5rem;  
+  }
+  /* filter */
+  .filter-card label {
+    font-size: 0.85rem;
+  }
+  /* Card title */
+  .card .card-title {
+    font-size: 1rem; /* smaller than default */
+  }
+
+  /* Language text */
+  .card p.text-muted {
+    font-size: 0.8rem;
+  }
+
+  /* Description */
+  .card .card-subtitle {
+    font-size: 0.85rem;
+  }
+
+  /* Code block */
+  .card pre code {
+    font-size: 0.75rem;
+  }
+
+  /* Add-Edit Card */
+  .add-edit-card input.form-control,
+  .add-edit-card textarea.form-control {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .add-edit-card h4 {
+    font-size: 1.2rem;
+  }
+
+  .edit-snippet-card button.add-snippet-btn {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  /* Footer */
+  footer.bg-dark {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
 }

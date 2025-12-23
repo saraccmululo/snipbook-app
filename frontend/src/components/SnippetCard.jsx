@@ -5,7 +5,7 @@ import {useState} from "react";
 import { useNavigate} from "react-router-dom";
 import { Card } from "react-bootstrap";
 
-const SnippetCard = ({ snippet }) => {
+const SnippetCard = ({ snippet, isExample = false }) => {
   const queryClient = useQueryClient();
   const navigate=useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -48,34 +48,34 @@ const SnippetCard = ({ snippet }) => {
         <div className="d-flex justify-content-between align-items-center flex-wrap">
           <Card.Title className="mb-1">{snippet.title}</Card.Title>
         
-        {/* Icons: Favorite, Edit, Delete */}
-          <div className="d-flex align-items-center mb-0 gap-3">
+          {/* Icons: Favorite, Edit, Delete */}
+          {!isExample && (
+          <div className="d-flex align-items-center mb-0 gap-1">
         
           {/* Favorite */}
           <i
-            className={snippet.favorite ? "bi bi-star-fill text-warning" : "bi bi-star text-secondary"}
+            className={snippet.favorite ? "bi bi-star-fill text-warning action-icon favorite" : "bi bi-star text-secondary action-icon favorite"}
             onClick={handleToggleFavorite}
-            style={{ cursor: "pointer", fontSize: "1.0rem"}}
-          ></i>
+            style={{ cursor: "pointer", fontSize: "1.3rem"}}
+          />
 
         {/* Edit */}
-          <button
-            className="btn btn-sm btn-link p-0"
+          <i 
+            className="bi bi-pencil text-primary action-icon edit" 
+            style={{ fontSize: "1.2rem" }} 
             onClick={() => navigate(`/snippets/${snippet.id}/edit`)}
             title="Edit"
-          >
-            <i className="bi bi-pencil text-primary" style={{ fontSize: "1.0rem" }}></i>
-          </button>
+          />
 
         {/* Delete */}
-          <button
-            className="btn btn-sm btn-link p-0"
+          <i 
+            className="bi bi-x text-danger action-icon delete" 
+            style={{fontSize: "1.5rem"}}
             onClick={() => setShowModal(true)}
             title="Delete"
-          >
-            <i className="bi bi-x text-danger" style={{fontSize: "1.5rem"}}></i>
-          </button>
+          />
         </div>
+        )}
       </div>
       
         {/* Language */}

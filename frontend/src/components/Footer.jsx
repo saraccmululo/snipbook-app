@@ -2,7 +2,7 @@ import portfolioIcon from "../assets/portfolio-icon-light.png"
 
 const Footer = () => {
   return (
-    <footer className="bg-dark text-light py-4 mt-auto">
+    <footer className="bg-dark text-light  mt-auto">
       <div className="container">
         <div className="row align-items-center text-center text-md-start">
 
@@ -15,7 +15,7 @@ const Footer = () => {
 
           {/* Right */}
           <div className="col-md-6">
-            <ul className="list-unstyled d-flex flex-column flex-md-row justify-content-md-end align-items-center gap-3 gap-md-4 mb-0">
+            <ul className="list-unstyled d-flex justify-content-center justify-content-md-end align-items-center gap-3 gap-md-4 mb-0">
 
               {/* External links with icons */}
               <li>

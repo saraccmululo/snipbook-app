@@ -67,12 +67,13 @@ class SnippetSerializer(serializers.ModelSerializer):
 
     language = data.get("language")
     if language:
-        upper_case_languages = {"css", "html", "sql", "jsx", "php", "json"}
+        lower =language.lower()
+        upper_case_languages = {"css", "html", "sql", "jsx", "php", "json", "api"}
 
-        if language in upper_case_languages:
-            data["language"] = language.upper()
+        if lower in upper_case_languages:
+            data["language"] = lower.upper()
         else:
-            data["language"] = language.capitalize()
+            data["language"] = lower.capitalize()
 
     return data
   

@@ -11,13 +11,14 @@ const Header = () => {
     <header className="bg-light border-bottom">
       <div className="container d-flex align-items-center justify-content-between p-2 border-bottom bg-light">
         
-        <Link to={isLoggedIn ? "/dashboard": "/"}><img src={logo} alt="Snipbook Logo" className="img-fluid" style={{ maxWidth: "250px" }}/></Link>
+        <Link to={isLoggedIn ? "/dashboard": "/"}><img src={logo} alt="Snipbook Logo" className="img-fluid header-logo" /></Link>
         <div className="d-flex align-items-center">
           {isLoggedIn && user && (
-            <p className="mb-0 me-3"><strong>{user.display_name}</strong>
+            <p className="mb-0 me-3 header-welcome"> <span className="welcome-text">Welcome, </span>
+  <strong>{user.display_name}</strong>
             </p>
           )}
-          <LoginLogoutBtn />
+          <LoginLogoutBtn className="header-logout-btn"/>
           </div>
       </div>
     </header>

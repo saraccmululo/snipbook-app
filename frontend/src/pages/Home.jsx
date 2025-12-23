@@ -1,29 +1,15 @@
 import { Link } from "react-router-dom";
-import { Card } from "react-bootstrap";
+import SnippetCard from "../components/SnippetCard";
 
-const exampleSnippets = [
+const exampleSnippet =
   {
     id: 1,
     title: "Hello World",
     language: "JavaScript",
+    description: "A function that prints a message to the console.",
     code: `function helloWorld() {\n  console.log("Hello, world!");\n}`,
     favorite: true,
-  },
-  {
-    id: 2,
-    title: "Sum Numbers",
-    language: "Python",
-    code: `def sum_numbers(a, b):\n    return a + b`,
-    favorite: false,
-  },
-  {
-    id: 3,
-    title: "Fetch API",
-    language: "JavaScript",
-    code: `fetch('/api/data')\n  .then(res => res.json())\n  .then(data => console.log(data));`,
-    favorite: true,
-  },
-];
+  }
 
 const Home = () => {
   return (
@@ -31,30 +17,24 @@ const Home = () => {
 
       {/* Hero Section */}
       <section className="text-center mb-5">
-        <h1 className="display-4">Welcome to Snipbook</h1>
-        <p className="lead">
+        <h1 className="display-4 font-inter inter-semibold">Welcome to Snipbook
+        </h1>
+        <p className="lead font-inter">
           Save, organize, and explore your code snippets all in one place.
         </p>
         <div className="mt-3">
-          <Link to="/login" className="btn btn-brand me-2">Login</Link>
+          <Link to="/login" className="btn btn-brand me-2" style={{ borderRadius: "0.40rem" }}>Login</Link>
           <Link to="/register" className="btn btn-brand-outline">Register</Link>
         </div>
       </section>
 
        {/* Snippet Example */}
-      <section className="mb-5 text-center">
-        <h3 className="mb-4">Example Snippet</h3>
-        <Card className="shadow-sm mx-auto" style={{ maxWidth: "600px" }}>
-          <Card.Body>
-            <Card.Title>{exampleSnippets[0].title}</Card.Title>
-            <pre className="bg-dark text-light p-2 rounded">
-              <code>{exampleSnippets[0].code}</code>
-            </pre>
-            <Card.Text className="text-muted mt-2">
-              Language: {exampleSnippets[0].language} | Favorite: {exampleSnippets[0].favorite ? "⭐" : "☆"}
-            </Card.Text>
-          </Card.Body>
-        </Card>
+      <section className="mb-5">
+        <h3 className="mb-4 text-center">Example Snippet</h3>
+        <SnippetCard
+          snippet={exampleSnippet}
+          isExample={true}
+        />
       </section>
 
       {/* Features Section */}
@@ -79,14 +59,6 @@ const Home = () => {
               <p>Filter snippets by title, language, code, or favorites easily.</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="text-center">
-        <h4>Ready to organize your code?</h4>
-        <div className="mt-3">
-          <Link to="/register" className="btn btn-brand me-2">Get Started</Link>
         </div>
       </section>
     </div>

@@ -1,6 +1,7 @@
 import SnippetCard from './SnippetCard'
 import API from '../utils/api'
 import { useQuery } from "@tanstack/react-query"
+import { useState } from 'react'
 
 const SnippetList = ({filters}) => {
   const{ sort, filterType, filterText} = filters;
@@ -13,12 +14,17 @@ const SnippetList = ({filters}) => {
     }
   });
 
-  if(isLoading){
+  const [visibleCount, setVisibleCount] = useState(6);
+
+  if (isLoading) {
     return (
-      <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
+      <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
       </div>
-    )} 
+    );
+  }
 
   if(isError) return <p className="text-danger">Failed to load snippets</p>
   
@@ -49,21 +55,36 @@ const SnippetList = ({filters}) => {
     }
   });
 
+  // Show only visibleCount snippets
+  const visibleSnippets = filteredSnippets.slice(0, visibleCount);
+  const handleLoadMore = () => {
+    setVisibleCount(prev => prev + 6); 
+  };
+
   return (
     <>
     {filteredSnippets.length === 0? (
       <p className="text-center">No snippets yet.</p>
     ) : (
+      <>
       <div className="row g-4">
-        {filteredSnippets.map((snippet) => (
+        {visibleSnippets.map((snippet) => (
           <div key={snippet.id} className="col-12 col-md-6 col-lg-4">
               <SnippetCard snippet={snippet}/>
           </div>
         ))}
       </div>
+      {visibleCount < filteredSnippets.length && (
+        <div className="text-center mt-3">
+          <button className="btn btn-brand-outline" onClick={handleLoadMore} style={{ borderRadius: "0.40rem" }}>
+            Load More
+          </button>
+        </div>
+      )}
+      </>
     )}
     </>
-  )
-}
+  );
+};
 
 export default SnippetList

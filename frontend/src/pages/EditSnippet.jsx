@@ -23,7 +23,7 @@ const EditSnippet = () => {
     }
   });
 
-    // populate form once snippet is loaded
+  // populate form once snippet is loaded
   useEffect(() => {
     if (snippet) {
       setTitle(snippet.title || "");
@@ -85,7 +85,7 @@ const EditSnippet = () => {
   return (
     <div className="container my-4">
       <BackButton />
-       <div className="card shadow-sm p-4">
+       <div className="card shadow-sm p-4 add-edit-card">
         <h4 className="mb-4">Edit Snippet</h4>
       <form onSubmit={handleSubmit} className="row g-3">
         <div className="col-12">

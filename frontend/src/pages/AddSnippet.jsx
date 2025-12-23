@@ -56,7 +56,7 @@ const AddSnippet = () => {
   return (
     <div className="container my-4">
       <BackButton />
-       <div className="card shadow-sm p-4">
+       <div className="card shadow-sm p-4 add-edit-card">
         <h4 className="mb-4">Add New Snippet</h4>
       <form onSubmit={handleSubmit} className="row g-3">
         <div className="col-12">
