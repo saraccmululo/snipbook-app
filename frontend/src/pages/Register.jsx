@@ -64,74 +64,86 @@ function Register() {
 
   return (
     <div className="d-flex justify-content-center mt-5 px-3">
-      <Card className="shadow-sm" style={{ maxWidth: "450px", width: "100%" }}>
-        <Card.Body>
-          <h3 className="text-center mb-4">Create an account</h3>
+    <div className="card shadow-sm" style={{ maxWidth: "450px", width: "100%" }}>
+      <div className="card-body">
 
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </Form.Group>
+      <h3 className="text-center mb-4">Create an account</h3>
 
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </Form.Group>
+      <form onSubmit={handleSubmit}>
+        {/* Username */}
+        <div className="mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
 
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Form.Group>
+        {/* Email */}
+        <div className="mb-3">
+          <input
+            type="email"
+            className="form-control"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
 
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="password"
-                placeholder="Confirm password"
-                value={password2}
-                onChange={(e) => setPassword2(e.target.value)}
-                required
-              />
-            </Form.Group>
+        {/* Password */}
+        <div className="mb-3">
+          <input
+            type="password"
+            className="form-control"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
-            <Button
-              type="submit"
-              className="w-100 btn-brand"
-              disabled={registerMutation.isLoading}
-            >
-              {registerMutation.isLoading
-                ? "Creating account..."
-                : "Register"}
-            </Button>
-          </Form>
+        {/* Confirm Password */}
+        <div className="mb-3">
+          <input
+            type="password"
+            className="form-control"
+            placeholder="Confirm password"
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
+            required
+          />
+        </div>
 
-          {errorMessage && (
-            <p className="text-danger mt-3 text-center">{errorMessage}</p>
-          )}
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="w-100 btn btn-brand"
+          disabled={registerMutation.isLoading}
+        >
+          {registerMutation.isLoading ? "Creating account..." : "Register"}
+        </button>
+      </form>
 
-          <p className="text-center mt-3 mb-0">
-            Already have an account?{" "}
-            <Link to="/login" className="brand-link">Login here</Link>
-          </p>
-        </Card.Body>
-      </Card>
+      {/* Error message */}
+      {errorMessage && (
+        <p className="text-danger mt-3 text-center">{errorMessage}</p>
+      )}
+
+      {/* Login link */}
+      <p className="text-center mt-3 mb-0">
+        Already have an account?{" "}
+        <Link to="/login" className="brand-link">Login here</Link>
+      </p>
+
     </div>
-  );
+  </div>
+</div>
+
+);
 };
 
 export default Register;

@@ -18,7 +18,7 @@ const LoginLogout = () => {
 
   return (
     <div className="header-logout-btn">
-      <button className="btn btn-brand" onClick = {isLoggedIn? handleLogout: handleLogin} style={{ borderRadius: "0.40rem" }}> {isLoggedIn? "Logout" : "Login"} 
+      <button className="btn btn-brand" onClick = {isLoggedIn? handleLogout: handleLogin} style={{ borderRadius: "0.40rem"}}> {isLoggedIn? "Logout" : "Login"} 
       </button>
     </div>
   );

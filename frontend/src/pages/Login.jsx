@@ -42,51 +42,61 @@ const Login = () => {
 
   return (
     <div className="d-flex justify-content-center mt-5 px-3">
-      <Card className="shadow-sm" style={{ maxWidth: "400px", width: "100%" }}>
-        <Card.Body>
-          <h3 className="text-center mb-4">Login</h3>
+      <div className="card shadow-sm" style={{ maxWidth: "400px", width: "100%" }}>
+        <div className="card-body">
 
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </Form.Group>
+        <h3 className="text-center mb-4">Login</h3>
 
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Form.Group>
+        <form onSubmit={handleSubmit}>
+        {/* Email */}
+        <div className="mb-3">
+          <input
+            type="email"
+            className="form-control"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
 
-            <Button
-              type="submit"
-              className="w-100 btn-brand"
-              disabled={loginMutation.isLoading}
-            >
-              {loginMutation.isLoading ? "Logging in..." : "Login"}
-            </Button>
-          </Form>
+        {/* Password */}
+        <div className="mb-3">
+          <input
+            type="password"
+            className="form-control"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
-          {errorMessage && (
-            <p className="text-danger mt-3 text-center">{errorMessage}</p>
-          )}
+        {/* Submit button */}
+        <button
+          type="submit"
+          className="w-100 btn btn-brand"
+          disabled={loginMutation.isLoading}
+        >
+          {loginMutation.isLoading ? "Logging in..." : "Login"}
+        </button>
+      </form>
 
-          <p className="text-center mt-3 mb-0">
-            Don’t have an account?{" "}
-            <Link to="/register" className="brand-link">Register here</Link>
-          </p>
-        </Card.Body>
-      </Card>
+      {/* Error message */}
+      {errorMessage && (
+        <p className="text-danger mt-3 text-center">{errorMessage}</p>
+      )}
+
+      {/* Register link */}
+      <p className="text-center mt-3 mb-0">
+        Don’t have an account?{" "}
+        <Link to="/register" className="brand-link">Register here</Link>
+      </p>
+
     </div>
+  </div>
+</div>
+
   );
 };
 

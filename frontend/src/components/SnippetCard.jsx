@@ -3,7 +3,6 @@ import API from "../utils/api";
 import ConfirmModal from "./ConfirmModal";
 import {useState} from "react";
 import { useNavigate} from "react-router-dom";
-import { Card } from "react-bootstrap";
 
 const SnippetCard = ({ snippet, isExample = false }) => {
   const queryClient = useQueryClient();
@@ -42,67 +41,68 @@ const SnippetCard = ({ snippet, isExample = false }) => {
 
   return (
   <>
-    <Card className="shadow-sm mx-auto mb-4" style={{ maxWidth: "600px" }}>
-      <Card.Body>
-        {/* Title */}
-        <div className="d-flex justify-content-between align-items-center flex-wrap">
-          <Card.Title className="mb-1">{snippet.title}</Card.Title>
-        
-          {/* Icons: Favorite, Edit, Delete */}
-          {!isExample && (
-          <div className="d-flex align-items-center mb-0 gap-1">
-        
+    <div className="card shadow-sm mx-auto mb-4" style={{ maxWidth: "600px" }}>
+      <div className="card-body">
+      {/* Title and icons */}
+      <div className="d-flex justify-content-between align-items-center flex-wrap">
+      <h5 className="card-title mb-1">{snippet.title}</h5>
+
+      {/* Icons: Favorite, Edit, Delete */}
+      {!isExample && (
+        <div className="d-flex align-items-center mb-0 gap-1">
+
           {/* Favorite */}
           <i
             className={snippet.favorite ? "bi bi-star-fill text-warning action-icon favorite" : "bi bi-star text-secondary action-icon favorite"}
             onClick={handleToggleFavorite}
-            style={{ cursor: "pointer", fontSize: "1.3rem"}}
+            style={{ cursor: "pointer", fontSize: "1.3rem" }}
           />
 
-        {/* Edit */}
-          <i 
-            className="bi bi-pencil text-primary action-icon edit" 
-            style={{ fontSize: "1.2rem" }} 
+          {/* Edit */}
+          <i
+            className="bi bi-pencil text-primary action-icon edit"
+            style={{ fontSize: "1.2rem" }}
             onClick={() => navigate(`/snippets/${snippet.id}/edit`)}
             title="Edit"
           />
 
-        {/* Delete */}
-          <i 
-            className="bi bi-x text-danger action-icon delete" 
-            style={{fontSize: "1.5rem"}}
+          {/* Delete */}
+          <i
+            className="bi bi-x text-danger action-icon delete"
+            style={{ fontSize: "1.5rem" }}
             onClick={() => setShowModal(true)}
             title="Delete"
           />
         </div>
-        )}
+      )}
+    </div>
+
+    {/* Language */}
+    <p className="text-muted mt-0 mb-3">({snippet.language})</p>
+
+    {/* Description */}
+    {snippet.description && (
+      <h6 className="card-subtitle mb-2 text-muted">{snippet.description}</h6>
+    )}
+
+    {/* Code container */}
+    <div>
+      <div className="d-flex justify-content-end mb-1">
+        <button
+          type="button"
+          className="btn btn-sm btn-link copy-btn"
+          onClick={handleCopy}
+        >
+          {copied ? "Copied!" : "⧉Copy"}
+        </button>
       </div>
-      
-        {/* Language */}
-        <p className="text-muted mt-0 mb-3">({snippet.language})</p>
+      <pre className="bg-dark text-light p-3 rounded" style={{ overflowX: 'auto' }}>
+        <code>{snippet.code}</code>
+      </pre>
+    </div>
 
-        {/* Description */}
-        {snippet.description && (
-          <Card.Subtitle className="mb-2 text-muted">{snippet.description}</Card.Subtitle>
-        )}
-
-        {/* Code container */}
-        <div>
-          <div className="d-flex justify-content-end mb-1">
-            <button
-              type="button"
-              className="btn btn-sm btn-link copy-btn"
-              onClick={handleCopy}
-            >
-              {copied ? "Copied!" : "⧉Copy"}
-            </button>
-          </div>
-          <pre className="bg-dark text-light p-3 rounded" style={{ overflowX: 'auto' }}>
-            <code>{snippet.code}</code>
-          </pre>
-        </div>
-      </Card.Body>
-    </Card>
+  </div>
+</div>
 
     {/* Delete Modal */}
     <ConfirmModal 

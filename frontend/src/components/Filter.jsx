@@ -1,4 +1,3 @@
-import { Form, Row, Col, Card } from "react-bootstrap";
 
 const Filter = ({filters, setFilters}) => {
   const {sort, filterType, filterText} = filters;
@@ -13,55 +12,66 @@ const Filter = ({filters, setFilters}) => {
   };
 
   return (
-    <Card className="mb-4 shadow-sm filter-card" style={{ maxWidth: "700px", margin: "auto" }}>
-      <Card.Body>
-        <Row className="g-3 align-items-center">
-          {/* Sort */}
-          <Col xs={12} sm={4}>
-            <Form.Group>
-              <Form.Label className="fw-bold">Sort by:</Form.Label>
-              <Form.Select value={sort} onChange={handleSortChange}>
+    <div className="card mb-4 shadow-sm filter-card" style={{ maxWidth: "700px", margin: "auto" }}>
+      <div className="card-body">
+        <div className="row g-3 align-items-center">
+
+        {/* Sort */}
+        <div className="col-12 col-sm-4">
+          <div className="mb-3">
+            <label className="fw-bold">Sort by:</label>
+            <select
+              className="form-select"
+              value={sort}
+              onChange={handleSortChange}
+            >
+            <option value="">None</option>
+            <option value="title A-Z">Title A-Z</option>
+            <option value="title Z-A">Title Z-A</option>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Filter by shared label */}
+      <div className="col-12 col-sm-8">
+        <div className="mb-3">
+          <label className="fw-bold d-block text-start">Filter by:</label>
+          <div className="row g-2">
+            
+            {/* Filter Type */}
+            <div className="col-12 col-sm-6">
+              <select
+                className="form-select"
+                value={filterType}
+                onChange={handleFilterTypeChange}
+              >
                 <option value="">None</option>
-                <option value="title A-Z">Title A-Z</option>
-                <option value="title Z-A">Title Z-A</option>
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-              </Form.Select>
-            </Form.Group>
-          </Col>
+                <option value="title">Title</option>
+                <option value="language">Language</option>
+                <option value="code">Code</option>
+                <option value="favorite">Favorite</option>
+              </select>
+            </div>
 
-          {/* Filter by shared label */}
-          <Col xs={12} sm={8}>
-            <Form.Group>
-              <Form.Label className="fw-bold d-block text-start">Filter by:</Form.Label>
-              <Row className="g-2">
-                {/* Filter Type */}
-                <Col xs={12} sm={6}>
-                  <Form.Select value={filterType} onChange={handleFilterTypeChange}>
-                    <option value="">None</option>
-                    <option value="title">Title</option>
-                    <option value="language">Language</option>
-                    <option value="code">Code</option>
-                    <option value="favorite">Favorite</option>
-                  </Form.Select>
-                </Col>
-
-                {/* Filter Text */}
-                <Col xs={12} sm={6}>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter keyword..."
-                    value={filterText}
-                    onChange={handleFilterTextChange}
-                  />
-                </Col>
-              </Row>
-            </Form.Group>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
-  );
+            {/* Filter Text */}
+            <div className="col-12 col-sm-6">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter keyword..."
+                value={filterText}
+                onChange={handleFilterTextChange}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+);
 }
 
 export default Filter
