@@ -1,5 +1,5 @@
 
-const Filter = ({filters, setFilters}) => {
+const Filter = ({filters, setFilters, showMobileFilter}) => {
   const {sort, filterType, filterText} = filters;
   const handleSortChange =(e)=>{
     setFilters(prev=>({...prev, sort: e.target.value}));
@@ -12,10 +12,15 @@ const Filter = ({filters, setFilters}) => {
   };
 
   return (
-    <div className="card mb-4 shadow-sm filter-card" style={{ maxWidth: "700px", margin: "auto" }}>
+    <>
+    {/* Filter box */}
+    <div 
+      className={`card mb-4 shadow-sm filter-card ${showMobileFilter ? "": "d-none"} d-sm-block`} 
+      style={{ maxWidth: "700px", margin: "auto" }}
+      >
       <div className="card-body">
         <div className="row g-3 align-items-center">
-
+          
         {/* Sort */}
         <div className="col-12 col-sm-4">
           <div className="mb-3">
@@ -71,6 +76,7 @@ const Filter = ({filters, setFilters}) => {
     </div>
   </div>
 </div>
+</>
 );
 }
 

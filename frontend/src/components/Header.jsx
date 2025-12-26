@@ -14,8 +14,9 @@ const Header = () => {
         <Link to={isLoggedIn ? "/dashboard": "/"}><img src={logo} alt="Snipbook Logo" className="img-fluid header-logo" /></Link>
         <div className="d-flex align-items-center">
           {isLoggedIn && user && (
-            <p className="mb-0 me-3 header-welcome"> <span className="welcome-text">Welcome, </span>
-  <strong>{user.display_name}</strong>
+            <p className="mb-0 me-3 header-welcome"> 
+              <span className="welcome-text">Welcome, </span>
+              <strong className="username-text">{user.display_name}</strong>
             </p>
           )}
           <LoginLogoutBtn className="header-logout-btn"/>

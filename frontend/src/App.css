@@ -6,13 +6,18 @@ section.inter-semibold {
 }
 
 header .header-logo {
-  max-width: 250px; 
+  max-width: 280px; 
 }
-header .header-logout-btn button {
-  font-size: 1.1rem;
-  padding: 0.3rem 0.6rem;
+.header-welcome .welcome-text,
+.header-welcome .username-text {
+    font-size: 1.2rem; 
 }
 
+header .header-logout-btn button {
+  font-size: 1.2rem;
+  padding: 0.3rem 0.6rem;
+}
+ 
 button.add-snippet-btn {
   background-color: rgba(4, 167, 168);
   border-color: rgba(4, 167, 168);
@@ -146,7 +151,7 @@ footer.bg-dark {
 
 @media (max-width: 576px) {
   header .header-logo {
-    max-width: 160px; 
+    max-width: 180px; 
   }
   .header-welcome .welcome-text {
     display: none; 
