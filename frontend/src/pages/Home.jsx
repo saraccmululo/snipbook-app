@@ -23,7 +23,7 @@ const Home = () => {
           Save, organize, and explore your code snippets all in one place.
         </p>
         <div className="mt-3">
-          <Link to="/login" className="btn btn-brand me-2" style={{ borderRadius: "0.40rem" }}>Login</Link>
+          <Link to="/login" className="btn btn-brand me-2" style={{ borderRadius: "0.40rem" }}> <i className="bi-person"></i>  Login</Link>
           <Link to="/register" className="btn btn-brand-outline">Register</Link>
         </div>
       </section>

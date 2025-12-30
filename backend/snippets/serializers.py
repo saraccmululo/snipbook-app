@@ -65,6 +65,10 @@ class SnippetSerializer(serializers.ModelSerializer):
   def to_representation(self, instance):
     data = super().to_representation(instance)
 
+    title = data.get("title")
+    if title:
+      data["title"]=title.title()
+
     language = data.get("language")
     if language:
         lower =language.lower()

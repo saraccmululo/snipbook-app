@@ -20,7 +20,7 @@ const Footer = () => {
               {/* External links with icons */}
               <li>
                 <a
-                  href="https://linkedin.com/in/yourusername"
+                  href="https://linkedin.com/in/saraccmululo"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-light fs-5"
