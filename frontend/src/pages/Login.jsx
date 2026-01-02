@@ -4,7 +4,7 @@ import API from "../utils/api"
 import { useNavigate, Link } from "react-router-dom"
 import { useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
-import { Form, Button, Card } from "react-bootstrap";
+import { useLocation } from "react-router-dom"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +13,8 @@ const Login = () => {
   
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const successMessage = location.state?.successMessage;
 
   const loginMutation = useMutation({
     mutationFn: (credentials) =>
@@ -46,6 +48,10 @@ const Login = () => {
         <div className="card-body">
 
         <h3 className="text-center mb-4">Login</h3>
+
+        {successMessage && (
+          <p className="text-success text-center mb-3">{successMessage}</p>
+        )}
 
         <form onSubmit={handleSubmit}>
         {/* Email */}
@@ -93,6 +99,11 @@ const Login = () => {
         <Link to="/register" className="brand-link">Register here</Link>
       </p>
 
+      {/* Forgot Password */}
+      <p className="text-center mt-3 mb-0">
+        Forgot your password?{" "}
+        <Link to="/reset-password" className="brand-link">Reset here</Link>
+      </p>
     </div>
   </div>
 </div>

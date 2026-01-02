@@ -10,6 +10,8 @@ import Dashboard from './pages/Dashboard';
 import AddSnippet from './pages/AddSnippet';
 import EditSnippet from './pages/EditSnippet';
 import Footer from './components/Footer'
+import ResetPassword from './pages/ResetPassword';
+import SubmitNewPassword from './pages/SubmitPassword';
 
  const App = () => {
    return (
@@ -23,6 +25,8 @@ import Footer from './components/Footer'
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute> }/>
             <Route path="/snippets/new" element={ <ProtectedRoute><AddSnippet/></ProtectedRoute>} />
             <Route path="/snippets/:id/edit" element={ <ProtectedRoute><EditSnippet/></ProtectedRoute>} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/reset-password/submit" element={<SubmitNewPassword />}/>
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         <Footer />

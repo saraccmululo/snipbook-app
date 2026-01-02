@@ -12,7 +12,7 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// handling 401
+// handling unauthorized 401 error to refresh token
 API.interceptors.response.use(
   response => response, // successful response, just return it
   async error => {
@@ -37,6 +37,7 @@ API.interceptors.response.use(
           return axios(originalRequest); // retry the request
         } catch (err) {
           // Refresh token expired → logout
+          console.error("Refresh token failed:", err);
           localStorage.removeItem("access_token");
           localStorage.removeItem("refresh_token");
           window.location.href = "/login";
@@ -49,5 +50,24 @@ API.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Request password reset email
+export const requestPasswordReset = async (email) => {
+  const response = await API.post("reset-password/", {
+    email,
+  });
+
+  return response.data; 
+};
+
+// Submit new password with token
+export const submitNewPassword = async ({ token, uid, password }) => {
+  const response = await API.post(`reset-password/${token}/`, {
+    uid,
+    password,
+  });
+
+  return response.data;
+};
 
 export default API;

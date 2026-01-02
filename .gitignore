@@ -32,3 +32,5 @@ lerna-debug.log*
 snipbook-logo.png
 snipbook-logo1.png
 Snipbook-presentation.mov
+
+.env
